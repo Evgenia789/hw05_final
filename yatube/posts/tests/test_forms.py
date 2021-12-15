@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
+
 from posts.models import Comment, Follow, Group, Post
 
 User = get_user_model()
@@ -257,7 +258,7 @@ class CommentCreateFormTests(TestCase):
         self.assertRedirects(
             response,
             f'/auth/login/?next=/posts'
-            f'/{CommentCreateFormTests.post.id}/comment'
+            f'/{CommentCreateFormTests.post.id}/comment/'
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 

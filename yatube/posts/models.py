@@ -63,13 +63,15 @@ class Comment(models.Model):
         Post,
         on_delete=models.CASCADE,
         related_name='comments',
-        max_length=200
+        max_length=200,
+        verbose_name='Текст поста'
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='comments',
-        max_length=200
+        max_length=200,
+        verbose_name='Автор'
     )
     text = models.TextField(verbose_name='Текст комментария',
                             help_text="Введите текст комментария",
@@ -88,10 +90,25 @@ class Follow(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='follower'
+        related_name='follower',
+        verbose_name='Подписчик'
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='following'
+        related_name='following',
+        verbose_name='Автор'
     )
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+        constraints = [models.UniqueConstraint(
+            fields=['user', 'author'],
+            name='unique_follow'
+        )]
+
+    def __str__(self):
+        return (f'Пользователь {self.user} '
+                f'подписан на пользователя {self.author}'
+                )
